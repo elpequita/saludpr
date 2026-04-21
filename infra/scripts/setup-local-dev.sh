@@ -147,7 +147,7 @@ if [[ ! -f "backend/.env" ]]; then
     cat > backend/.env <<EOF
 # SaludPR Backend — LOCAL DEV (generated $(date -u +%Y-%m-%dT%H:%M:%SZ))
 # Uses peer auth via your Linux user. No password needed locally.
-DATABASE_URL=postgresql+psycopg://${LOCAL_USER}@localhost:5432/${DB_NAME}
+DATABASE_URL=postgresql+psycopg://${LOCAL_USER}@/${DB_NAME}
 
 APP_ENV=development
 APP_DEBUG=true

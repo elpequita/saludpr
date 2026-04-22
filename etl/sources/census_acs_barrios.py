@@ -1,11 +1,14 @@
-"""Load US Census ACS / PR Community Survey data for all 78 PR municipios.
+"""Load US Census ACS / PRCS data at the BARRIO level for Puerto Rico.
 
-Uses shared logic from lib.acs_common for variable definitions, API paging,
-and synthetic-sum handling. This module only holds the muni-specific
-orchestration (geography spec, DB upserts).
+Uses the `county subdivision` geography which, in PR, corresponds to barrios.
+Each ACS variable chunk returns a row per barrio with a 10-digit composite key:
+state(2) + county(3) + county subdivision(5).
+
+Expect significant suppression — barrios with small populations will have
+many cells returned as sentinel-missing values. That's reality, not a bug.
 
 Run:
-    cd etl && uv run python -m sources.census_acs
+    cd etl && uv run python -m sources.census_acs_barrios
 """
 
 from __future__ import annotations
@@ -28,24 +31,29 @@ from lib.tracker import EtlRunTracker
 log = get_logger(__name__)
 
 SOURCE_SLUG = "census_acs"
-GEOGRAPHY = f"for=county:*&in=state:{PR_STATE_FIPS}"
+# `for=county subdivision:*&in=state:72 county:*` returns all barrios in all PR munis.
+GEOGRAPHY = (
+    "for=county subdivision:*&"
+    f"in=state:{PR_STATE_FIPS}&"
+    "in=county:*"
+)
 
 
 UPSERT_SQL = text(
     """
-    INSERT INTO health_metrics (
-        muni_id, indicator_code, year,
+    INSERT INTO barrio_health_metrics (
+        barrio_id, indicator_code, year,
         value, value_type, numerator, denominator,
         is_suppressed, is_estimated,
         source_id, etl_run_id, updated_at
     )
     VALUES (
-        :muni_id, :indicator_code, :year,
+        :barrio_id, :indicator_code, :year,
         :value, :value_type, :numerator, :denominator,
         :is_suppressed, false,
         :source_id, :etl_run_id, now()
     )
-    ON CONFLICT (muni_id, indicator_code, year, source_id) DO UPDATE SET
+    ON CONFLICT (barrio_id, indicator_code, year, source_id) DO UPDATE SET
         value = EXCLUDED.value,
         numerator = EXCLUDED.numerator,
         denominator = EXCLUDED.denominator,
@@ -56,19 +64,20 @@ UPSERT_SQL = text(
 )
 
 
-def _get_known_munis() -> set[str]:
+def _get_known_barrios() -> set[str]:
     with session_scope() as s:
-        rows = s.execute(text("SELECT id FROM municipalities")).all()
+        rows = s.execute(text("SELECT id FROM barrios")).all()
     return {r[0] for r in rows}
 
 
 def main() -> None:
-    known_munis = _get_known_munis()
-    if not known_munis:
+    known_barrios = _get_known_barrios()
+    if not known_barrios:
         raise RuntimeError(
-            "No municipalities in DB. Run the TIGER loader first."
+            "No barrios in DB. Run the TIGER barrio loader first: "
+            "uv run python -m sources.census_tiger_barrios"
         )
-    log.info("Known municipalities in DB: %d", len(known_munis))
+    log.info("Known barrios in DB: %d", len(known_barrios))
 
     acs_vars = all_acs_variables()
     log.info("Will fetch %d ACS variables × %d years", len(acs_vars), len(YEARS))
@@ -77,6 +86,7 @@ def main() -> None:
         total_read = 0
         total_upserted = 0
         total_skipped = 0
+        suppressed_count = 0
 
         with session_scope() as s:
             for year in YEARS:
@@ -88,22 +98,28 @@ def main() -> None:
                     total_skipped += 1
                     continue
 
-                log.info("  fetched %d muni rows", len(rows))
+                log.info("  fetched %d barrio rows", len(rows))
                 total_read += len(rows)
 
                 for row in rows:
-                    muni_id = str(row.get("state", "")) + str(row.get("county", ""))
-                    if muni_id not in known_munis:
+                    barrio_id = (
+                        str(row.get("state", ""))
+                        + str(row.get("county", ""))
+                        + str(row.get("county subdivision", ""))
+                    )
+                    if barrio_id not in known_barrios:
                         total_skipped += 1
                         continue
 
                     for var in VARIABLES:
                         value, numerator, denominator = compute_value(var, row)
                         is_suppressed = value is None
+                        if is_suppressed:
+                            suppressed_count += 1
                         s.execute(
                             UPSERT_SQL,
                             {
-                                "muni_id": muni_id,
+                                "barrio_id": barrio_id,
                                 "indicator_code": var.code,
                                 "year": year,
                                 "value": value,
@@ -120,9 +136,14 @@ def main() -> None:
         run.rows_read = total_read
         run.rows_upserted = total_upserted
         run.rows_skipped = total_skipped
+
+        pct_suppressed = (
+            100.0 * suppressed_count / max(total_upserted, 1)
+        )
         log.info(
-            "Finished. Years=%d Indicators=%d Upserted=%d Skipped=%d",
+            "Finished. Years=%d Indicators=%d Upserted=%d Skipped=%d Suppressed=%d (%.1f%%)",
             len(YEARS), len(VARIABLES), total_upserted, total_skipped,
+            suppressed_count, pct_suppressed,
         )
 
 

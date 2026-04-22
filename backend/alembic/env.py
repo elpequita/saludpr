@@ -15,6 +15,8 @@ load_dotenv()
 # Import the Base metadata — all models must be imported here so Alembic sees them
 from app.database import Base
 from app.models import (  # noqa: F401 - imported for side effect (metadata registration)
+    barrio,
+    barrio_health_metric,
     data_source,
     etl_run,
     health_metric,

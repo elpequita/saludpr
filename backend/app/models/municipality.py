@@ -13,6 +13,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
 
 if TYPE_CHECKING:
+    from app.models.barrio import Barrio
     from app.models.health_metric import HealthMetric
     from app.models.hospital import Hospital
     from app.models.vulnerability import Vulnerability
@@ -64,6 +65,10 @@ class Municipality(Base):
         cascade="all, delete-orphan",
     )
     vulnerability_records: Mapped[list["Vulnerability"]] = relationship(
+        back_populates="municipality",
+        cascade="all, delete-orphan",
+    )
+    barrios: Mapped[list["Barrio"]] = relationship(
         back_populates="municipality",
         cascade="all, delete-orphan",
     )

@@ -16,7 +16,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.routers import health, municipalities
+from app.routers import barrios, health, metrics, municipalities
 
 
 @asynccontextmanager
@@ -51,3 +51,5 @@ app.add_middleware(
 # --- Routers ---
 app.include_router(health.router, prefix="/api", tags=["health"])
 app.include_router(municipalities.router, prefix="/api", tags=["municipalities"])
+app.include_router(metrics.router, prefix="/api", tags=["metrics"])
+app.include_router(barrios.router, prefix="/api", tags=["barrios"])

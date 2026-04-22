@@ -4,6 +4,9 @@ import { Suspense, useEffect, useState } from "react";
 import { PRMap } from "@/components/pr-map";
 import { IndicatorPicker } from "@/components/indicator-picker";
 import { BarrioDrilldownHeader } from "@/components/barrio-drilldown-header";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { TerritoryContextPanel } from "@/components/territory-context-panel";
 import { INDICATORS } from "@/lib/indicators";
 
 type IndicatorApiRow = {
@@ -61,50 +64,7 @@ export default function HomePage() {
 
   return (
     <main className="relative z-10 min-h-screen">
-      {/* Header */}
-      <header className="border-b border-[var(--color-border)] bg-[var(--color-ink)]/70 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <div className="flex items-center gap-3 rise rise-1">
-            <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-[var(--color-amber)] text-[var(--color-ink)]">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-4 w-4"
-                aria-hidden="true"
-              >
-                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-              </svg>
-            </div>
-            <span className="font-display text-xl leading-none tracking-tight">
-              Salud<span className="text-[var(--color-amber)]">PR</span>
-            </span>
-          </div>
-
-          <nav className="flex items-center gap-8 text-sm text-[var(--color-text-muted)] rise rise-2">
-            <a href="#about" className="transition-colors hover:text-[var(--color-text)]">
-              Acerca
-            </a>
-            <a
-              href="#methodology"
-              className="transition-colors hover:text-[var(--color-text)]"
-            >
-              Metodología
-            </a>
-            <a
-              href="https://www.dataurea.com"
-              target="_blank"
-              rel="noreferrer"
-              className="transition-colors hover:text-[var(--color-text)]"
-            >
-              Dataurea ↗
-            </a>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Hero */}
       <section className="mx-auto max-w-7xl px-6 pb-12 pt-16 md:pt-24">
@@ -188,34 +148,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="mt-12 border-t border-[var(--color-border)] bg-[var(--color-ink-soft)]/50">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-sm text-[var(--color-text-muted)] md:flex-row md:items-center md:justify-between">
-          <div>
-            Un proyecto de{" "}
-            <a
-              href="https://www.dataurea.com"
-              target="_blank"
-              rel="noreferrer"
-              className="text-[var(--color-amber)] underline-offset-4 hover:underline"
-            >
-              Dataurea
-            </a>{" "}
-            · Datos bajo{" "}
-            <a
-              href="https://creativecommons.org/licenses/by/4.0/"
-              target="_blank"
-              rel="noreferrer"
-              className="underline-offset-4 hover:underline"
-            >
-              CC BY 4.0
-            </a>
-          </div>
-          <div className="font-mono text-xs uppercase tracking-widest">
-            PR · EN / ES
-          </div>
-        </div>
-      </footer>
+      <TerritoryContextPanel />
+
+      <SiteFooter />
     </main>
   );
 }

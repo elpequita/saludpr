@@ -7,6 +7,7 @@ from app.models.etl_run import EtlRun
 from app.models.health_metric import HealthMetric
 from app.models.hospital import Hospital
 from app.models.municipality import Municipality
+from app.models.territory_health_metric import TerritoryHealthMetric
 from app.models.vulnerability import Vulnerability
 
 __all__ = [
@@ -17,5 +18,6 @@ __all__ = [
     "HealthMetric",
     "Hospital",
     "Municipality",
+    "TerritoryHealthMetric",
     "Vulnerability",
 ]

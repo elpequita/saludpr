@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { PRMap } from "@/components/pr-map";
 import { IndicatorPicker } from "@/components/indicator-picker";
+import { BarrioDrilldownHeader } from "@/components/barrio-drilldown-header";
 import { INDICATORS } from "@/lib/indicators";
 
 type IndicatorApiRow = {
@@ -21,6 +22,7 @@ export default function HomePage() {
   const [selected, setSelected] = useState<string>(DEFAULT_INDICATOR);
   const [year, setYear] = useState<number>(2023);
   const [breaks, setBreaks] = useState<number[] | null>(null);
+  const [selectedMuniName, setSelectedMuniName] = useState<string | null>(null);
 
   // Fetch list of available indicators
   useEffect(() => {
@@ -160,6 +162,12 @@ export default function HomePage() {
             onYearChange={setYear}
           />
           <div className="overflow-hidden border border-t-0 border-[var(--color-border)] shadow-2xl">
+            {selectedMuniName && (
+              <BarrioDrilldownHeader
+                muniName={selectedMuniName}
+                barrioCount={null}
+              />
+            )}
             <Suspense
               fallback={
                 <div className="flex h-[560px] items-center justify-center bg-[var(--color-surface)]">
@@ -173,6 +181,7 @@ export default function HomePage() {
                 indicator={selected}
                 year={year}
                 onBreaksComputed={setBreaks}
+                onMuniSelected={setSelectedMuniName}
               />
             </Suspense>
           </div>

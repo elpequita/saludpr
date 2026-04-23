@@ -214,7 +214,7 @@ export function PRMap({
   const ramp = COLOR_RAMPS[meta?.direction ?? "neutral"];
   const noData = "#0e1d24";
 
-  const buildStepColor = (breaks: number[] | null): mapboxgl.FillPaint["fill-color"] => {
+  const buildStepColor = (breaks: number[] | null): mapboxgl.ExpressionSpecification | string => {
     if (!breaks) return noData;
     return [
       "case",
@@ -409,7 +409,7 @@ export function PRMap({
         return;
       }
 
-      const sourceLayer = feat.layer.id.startsWith("barrios") ? "barrios" : "munis";
+      const sourceLayer = feat.layer?.id?.startsWith("barrios") ? "barrios" : "munis";
       const props = feat.properties as MuniFeatureProps & { population_latest: number | null };
       const id = String(props.id);
 

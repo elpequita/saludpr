@@ -7,6 +7,7 @@ import { BarrioDrilldownHeader } from "@/components/barrio-drilldown-header";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { TerritoryContextPanel } from "@/components/territory-context-panel";
+import { DesignationStatCard } from "@/components/designation-stat-card";
 import { INDICATORS } from "@/lib/indicators";
 
 type IndicatorApiRow = {
@@ -97,6 +98,8 @@ export default function HomePage() {
 
       {/* Map section */}
       <section className="mx-auto max-w-7xl px-6 py-8">
+        <DesignationStatCard />
+
         <div className="mb-4 flex items-end justify-between rise rise-4">
           <div>
             <h2 className="font-display text-3xl tracking-tight md:text-4xl">

@@ -7,7 +7,11 @@
  *   'neutral'      — demographic (population, median age)  — use sequential neutral
  */
 
-export type IndicatorDirection = "high_is_bad" | "high_is_good" | "neutral";
+export type IndicatorDirection =
+  | "high_is_bad"
+  | "high_is_good"
+  | "low_is_bad"
+  | "neutral";
 
 export type IndicatorMeta = {
   code: string;
@@ -115,6 +119,17 @@ export const INDICATORS: Record<string, IndicatorMeta> = {
     unit: "count",
     direction: "neutral",
   },
+  imu_score: {
+    code: "imu_score",
+    label_en: "HRSA Index of Medical Underservice",
+    label_es: "Índice de escasez médica (HRSA)",
+    short_en: "IMU Score",
+    short_es: "IMU Score",
+    unit: "count",
+    direction: "low_is_bad",
+    description_es:
+      "Puntuación federal 0-100. Menor = mayor escasez médica. Umbral: 62.",
+  },
 };
 
 /**
@@ -124,6 +139,9 @@ export const INDICATORS: Record<string, IndicatorMeta> = {
 export const COLOR_RAMPS: Record<IndicatorDirection, string[]> = {
   high_is_bad: ["#1e3640", "#3d4d3c", "#78653e", "#c2882c", "#f59e0b"],
   high_is_good: ["#1e3640", "#155e60", "#0d8579", "#2fb4a0", "#5eead4"],
+  // For low_is_bad: low values amber-red (bad), high values teal (good).
+  // Reverse of high_is_bad palette.
+  low_is_bad: ["#f59e0b", "#c2882c", "#78653e", "#3d4d3c", "#1e3640"],
   neutral: ["#1a2a32", "#2e4047", "#4a5d64", "#728589", "#a8b8bc"],
 };
 

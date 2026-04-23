@@ -30,6 +30,9 @@ type MuniFeatureProps = {
   year: number | null;
   is_suppressed: boolean | null;
   is_estimated: boolean | null;
+  designation_code: string | null;
+  imu_score: number | null;
+  designation_year: number | null;
 };
 
 type BarrioFeatureProps = MuniFeatureProps & {
@@ -47,6 +50,9 @@ type HoverInfo = {
   x: number;
   y: number;
   reliable: boolean;
+  designationCode: string | null;
+  imuScore: number | null;
+  designationYear: number | null;
 };
 
 type ViewState = "island" | "muni";
@@ -423,6 +429,13 @@ export function PRMap({
       }
 
       const pop = props.population_latest;
+      // Designation fields only exist on muni features, not barrio features.
+      // Safe optional lookup so we don't crash on barrios.
+      const propsAny = props as MuniFeatureProps & {
+        designation_code?: string | null;
+        imu_score?: number | null;
+        designation_year?: number | null;
+      };
       setHoverInfo({
         id,
         name: props.name,
@@ -431,6 +444,12 @@ export function PRMap({
         x: e.point.x,
         y: e.point.y,
         reliable: pop === null || pop >= RELIABLE_POP_THRESHOLD,
+        designationCode: propsAny.designation_code ?? null,
+        imuScore:
+          propsAny.imu_score !== undefined && propsAny.imu_score !== null
+            ? Number(propsAny.imu_score)
+            : null,
+        designationYear: propsAny.designation_year ?? null,
       });
     },
     [hoverId, hoverSource],
@@ -570,6 +589,23 @@ export function PRMap({
               <> · {hoverInfo.population.toLocaleString("es-PR")} hab.</>
             )}
           </div>
+
+          {/* Federal designation badge — only for munis in island view */}
+          {hoverSource === "munis" && hoverInfo.designationCode && (
+            <div className="mt-2 flex items-center gap-2 border-t border-[var(--color-border)] pt-2">
+              <span className="border border-[var(--color-amber)]/60 bg-[var(--color-amber)]/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[var(--color-amber)]">
+                🏥 {hoverInfo.designationCode}
+              </span>
+              <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--color-text-muted)]">
+                {hoverInfo.imuScore !== null && (
+                  <>IMU {hoverInfo.imuScore.toFixed(2)}</>
+                )}
+                {hoverInfo.designationYear && (
+                  <> · desde {hoverInfo.designationYear}</>
+                )}
+              </span>
+            </div>
+          )}
         </div>
       )}
 

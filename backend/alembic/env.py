@@ -21,6 +21,7 @@ from app.models import (  # noqa: F401 - imported for side effect (metadata regi
     etl_run,
     health_metric,
     hospital,
+    muni_designation,
     municipality,
     territory_health_metric,
     vulnerability,

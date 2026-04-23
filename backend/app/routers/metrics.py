@@ -61,7 +61,22 @@ def list_indicators(db: DbSession) -> list[Indicator]:
             FROM health_metrics hm
             JOIN data_sources ds ON ds.id = hm.source_id
             GROUP BY hm.indicator_code, ds.slug, ds.name
-            ORDER BY hm.indicator_code
+
+            UNION ALL
+
+            SELECT
+                'imu_score' AS code,
+                'imu_score' AS value_type,
+                ds.slug AS source_slug,
+                ds.name AS source_name,
+                array_agg(DISTINCT EXTRACT(YEAR FROM d.designation_date)::int
+                    ORDER BY EXTRACT(YEAR FROM d.designation_date)::int) AS years,
+                COUNT(*) AS total_rows
+            FROM v_muni_active_designations d
+            JOIN data_sources ds ON ds.id = d.source_id
+            GROUP BY ds.slug, ds.name
+
+            ORDER BY code
             """
         )
     ).all()

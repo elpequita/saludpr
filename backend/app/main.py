@@ -16,7 +16,15 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.routers import barrios, data_sources, health, metrics, municipalities, territory
+from app.routers import (
+    barrios,
+    data_sources,
+    designations,
+    health,
+    metrics,
+    municipalities,
+    territory,
+)
 
 
 @asynccontextmanager
@@ -54,4 +62,5 @@ app.include_router(municipalities.router, prefix="/api", tags=["municipalities"]
 app.include_router(metrics.router, prefix="/api", tags=["metrics"])
 app.include_router(barrios.router, prefix="/api", tags=["barrios"])
 app.include_router(territory.router, prefix="/api", tags=["territory"])
+app.include_router(designations.router, prefix="/api", tags=["designations"])
 app.include_router(data_sources.router, prefix="/api", tags=["provenance"])

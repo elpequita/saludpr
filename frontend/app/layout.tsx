@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Fraunces, Instrument_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -40,10 +41,17 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
+<html
       lang="es"
       className={`${fraunces.variable} ${instrumentSans.variable} ${ibmPlexMono.variable}`}
     >
+      {/* Umami Analytics — self-hosted, privacy-first, cookieless */}
+      <Script
+        defer
+        src="http://20.114.253.76:8081/script.js"
+        data-website-id="c2e5c0fe-98c3-409b-b4eb-a206955d2fe7"
+        strategy="afterInteractive"
+      />
       <body>{children}</body>
     </html>
   );

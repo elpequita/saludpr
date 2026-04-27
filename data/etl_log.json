@@ -1,0 +1,158 @@
+{
+  "last_updated": "2026-04-27T16:15:38.418317+00:00",
+  "last_status": "success",
+  "runs": [
+    {
+      "run_at": "2026-04-27T16:15:38.418317+00:00",
+      "overall_status": "success",
+      "sources": [
+        {
+          "source": "census_tiger_municipalities",
+          "status": "success",
+          "started_at": "2026-04-27T16:09:24.316620+00:00",
+          "finished_at": "2026-04-27T16:09:31.414308+00:00",
+          "duration_seconds": 7,
+          "stdout_tail": "23_us_county\n2026-04-27 16:09:26 [INFO ] __main__: Reading shapefile: tl_2023_us_county.shp\n2026-04-27 16:09:30 [INFO ] __main__: Loaded 3235 features from TIGER (all US)\n2026-04-27 16:09:30 [INFO ] __main__: Filtered to 78 features for Puerto Rico (STATEFP=72)\n2026-04-27 16:09:30 [INFO ] __main__: Processed 78 PR municipios\n2026-04-27 16:09:31 [INFO ] __main__: Upserted 78 municipalities\n2026-04-27 16:09:31 [INFO ] lib.tracker: Finished ETL run id=7 status=success read=78 upserted=78 skipped=0\n"
+        },
+        {
+          "source": "census_tiger_barrios",
+          "status": "success",
+          "started_at": "2026-04-27T16:09:31.414365+00:00",
+          "finished_at": "2026-04-27T16:09:34.340407+00:00",
+          "duration_seconds": 3,
+          "stdout_tail": "rce=census_tiger_pr\n2026-04-27 16:09:32 [INFO ] __main__: Cached: tl_2023_72_cousub.zip\n2026-04-27 16:09:32 [INFO ] __main__: Reading shapefile: tl_2023_72_cousub.shp\n2026-04-27 16:09:32 [INFO ] __main__: Loaded 939 features\n2026-04-27 16:09:32 [INFO ] __main__: Processed 939 barrios across 78 munis\n2026-04-27 16:09:34 [INFO ] __main__: Upserted 939 barrios (skipped 0 with unknown muni)\n2026-04-27 16:09:34 [INFO ] lib.tracker: Finished ETL run id=8 status=success read=939 upserted=939 skipped=0\n"
+        },
+        {
+          "source": "census_acs",
+          "status": "success",
+          "started_at": "2026-04-27T16:09:34.340457+00:00",
+          "finished_at": "2026-04-27T16:10:44.230546+00:00",
+          "duration_seconds": 70,
+          "stdout_tail": "2026-04-27 16:10:40 [INFO ] __main__:   fetched 78 muni rows\n2026-04-27 16:10:40 [INFO ] __main__: --- Year 2022 ---\n2026-04-27 16:10:42 [INFO ] __main__:   fetched 78 muni rows\n2026-04-27 16:10:42 [INFO ] __main__: --- Year 2023 ---\n2026-04-27 16:10:43 [INFO ] __main__:   fetched 78 muni rows\n2026-04-27 16:10:44 [INFO ] __main__: Finished. Years=5 Indicators=10 Upserted=3900 Skipped=0\n2026-04-27 16:10:44 [INFO ] lib.tracker: Finished ETL run id=9 status=success read=390 upserted=3900 skipped=0\n"
+        },
+        {
+          "source": "census_acs_barrios",
+          "status": "success",
+          "started_at": "2026-04-27T16:10:44.230596+00:00",
+          "finished_at": "2026-04-27T16:15:04.156029+00:00",
+          "duration_seconds": 260,
+          "stdout_tail": ":   fetched 939 barrio rows\n2026-04-27 16:13:03 [INFO ] __main__: --- Year 2022 ---\n2026-04-27 16:13:05 [INFO ] __main__:   fetched 939 barrio rows\n2026-04-27 16:13:08 [INFO ] __main__: --- Year 2023 ---\n2026-04-27 16:15:00 [INFO ] __main__:   fetched 939 barrio rows\n2026-04-27 16:15:03 [INFO ] __main__: Finished. Years=5 Indicators=10 Upserted=46950 Skipped=0 Suppressed=2784 (5.9%)\n2026-04-27 16:15:03 [INFO ] lib.tracker: Finished ETL run id=10 status=success read=4695 upserted=46950 skipped=0\n"
+        },
+        {
+          "source": "hrsa_mua",
+          "status": "success",
+          "started_at": "2026-04-27T16:15:04.156080+00:00",
+          "finished_at": "2026-04-27T16:15:06.523482+00:00",
+          "duration_seconds": 2,
+          "stdout_tail": "2026-04-27 16:15:04 [INFO ] __main__: Downloading HRSA MUA/P detail CSV...\n2026-04-27 16:15:05 [INFO ] __main__: Downloaded 11258790 bytes to /tmp/hrsa_mua_det.csv\n2026-04-27 16:15:06 [INFO ] lib.tracker: Started ETL run id=11 source=hrsa_mua\n2026-04-27 16:15:06 [INFO ] __main__: Finished. Total CSV rows=19715 | PR rows=72 | Upserted=72 | Skipped=0\n2026-04-27 16:15:06 [INFO ] lib.tracker: Finished ETL run id=11 status=success read=19715 upserted=72 skipped=0\n"
+        },
+        {
+          "source": "cdc_places_county",
+          "status": "success",
+          "started_at": "2026-04-27T16:15:06.523529+00:00",
+          "finished_at": "2026-04-27T16:15:07.886439+00:00",
+          "duration_seconds": 1,
+          "stdout_tail": "in__: Known municipalities in DB: 78\n2026-04-27 16:15:07 [INFO ] lib.tracker: Started ETL run id=12 source=cdc_brfss\n2026-04-27 16:15:07 [INFO ] __main__: Fetching PLACES county data (StateAbbr=PR, DataValueTypeID=AgeAdjPrv)...\n2026-04-27 16:15:07 [INFO ] __main__: Total PR rows received: 0\n2026-04-27 16:15:07 [INFO ] __main__: Upserted 0 health_metric rows across 17 indicators × ~78 munis\n2026-04-27 16:15:07 [INFO ] lib.tracker: Finished ETL run id=12 status=success read=0 upserted=0 skipped=0\n"
+        },
+        {
+          "source": "cdc_brfss_territory",
+          "status": "success",
+          "started_at": "2026-04-27T16:15:07.886488+00:00",
+          "finished_at": "2026-04-27T16:15:37.823953+00:00",
+          "duration_seconds": 30,
+          "stdout_tail": "_main__: --- Year 2019 ---\n2026-04-27 16:15:23 [INFO ] __main__: --- Year 2020 ---\n2026-04-27 16:15:26 [INFO ] __main__: --- Year 2021 ---\n2026-04-27 16:15:28 [INFO ] __main__: --- Year 2022 ---\n2026-04-27 16:15:31 [INFO ] __main__: --- Year 2023 ---\n2026-04-27 16:15:34 [INFO ] __main__: --- Year 2024 ---\n2026-04-27 16:15:37 [INFO ] __main__: Finished. Read=398 Upserted=127 Missing=13\n2026-04-27 16:15:37 [INFO ] lib.tracker: Finished ETL run id=13 status=success read=398 upserted=127 skipped=13\n"
+        }
+      ],
+      "validations": [
+        {
+          "check": "municipalities_count",
+          "description": "Los 78 municipios deben estar cargados",
+          "value": 78.0,
+          "expected_min": 78,
+          "expected_max": 78,
+          "passed": true
+        },
+        {
+          "check": "health_metrics_rows",
+          "description": "health_metrics debe tener al menos 100 filas",
+          "value": 3900.0,
+          "expected_min": 100,
+          "expected_max": null,
+          "passed": true
+        },
+        {
+          "check": "territory_metrics_rows",
+          "description": "territory_health_metrics debe tener al menos 10 filas",
+          "value": 127.0,
+          "expected_min": 10,
+          "expected_max": null,
+          "passed": true
+        },
+        {
+          "check": "diabetes_rate_sanity",
+          "description": "Tasa promedio de diabetes debe estar entre 5% y 50%",
+          "value": 16.89,
+          "expected_min": 5.0,
+          "expected_max": 50.0,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "run_at": "2026-04-27T16:09:18.397098+00:00",
+      "overall_status": "success",
+      "sources": [
+        {
+          "source": "census_tiger_municipalities",
+          "status": "skipped_dry_run",
+          "started_at": "2026-04-27T16:09:18.396923+00:00",
+          "finished_at": "2026-04-27T16:09:18.396931+00:00",
+          "duration_seconds": 0
+        },
+        {
+          "source": "census_tiger_barrios",
+          "status": "skipped_dry_run",
+          "started_at": "2026-04-27T16:09:18.396937+00:00",
+          "finished_at": "2026-04-27T16:09:18.396944+00:00",
+          "duration_seconds": 0
+        },
+        {
+          "source": "census_acs",
+          "status": "skipped_dry_run",
+          "started_at": "2026-04-27T16:09:18.396948+00:00",
+          "finished_at": "2026-04-27T16:09:18.396954+00:00",
+          "duration_seconds": 0
+        },
+        {
+          "source": "census_acs_barrios",
+          "status": "skipped_dry_run",
+          "started_at": "2026-04-27T16:09:18.396956+00:00",
+          "finished_at": "2026-04-27T16:09:18.396983+00:00",
+          "duration_seconds": 0
+        },
+        {
+          "source": "hrsa_mua",
+          "status": "skipped_dry_run",
+          "started_at": "2026-04-27T16:09:18.396986+00:00",
+          "finished_at": "2026-04-27T16:09:18.396996+00:00",
+          "duration_seconds": 0
+        },
+        {
+          "source": "cdc_places_county",
+          "status": "skipped_dry_run",
+          "started_at": "2026-04-27T16:09:18.396999+00:00",
+          "finished_at": "2026-04-27T16:09:18.397005+00:00",
+          "duration_seconds": 0
+        },
+        {
+          "source": "cdc_brfss_territory",
+          "status": "skipped_dry_run",
+          "started_at": "2026-04-27T16:09:18.397007+00:00",
+          "finished_at": "2026-04-27T16:09:18.397012+00:00",
+          "duration_seconds": 0
+        }
+      ],
+      "validations": []
+    }
+  ]
+}

@@ -9,6 +9,8 @@ Run locally:
 
 from __future__ import annotations
 
+import os
+
 from contextlib import asynccontextmanager
 from collections.abc import AsyncIterator
 
@@ -42,9 +44,10 @@ app = FastAPI(
     ),
     version="0.1.0",
     lifespan=lifespan,
-    docs_url="/docs",
-    redoc_url="/redoc",
-    openapi_url="/openapi.json",
+    # Disable public API docs in production. Locally, /docs stays useful.
+    docs_url=None if os.getenv("ENVIRONMENT") == "production" else "/docs",
+    redoc_url=None if os.getenv("ENVIRONMENT") == "production" else "/redoc",
+    openapi_url=None if os.getenv("ENVIRONMENT") == "production" else "/openapi.json",
 )
 
 # --- CORS ---

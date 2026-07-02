@@ -5,6 +5,7 @@ import { PRMap } from "@/components/pr-map";
 import { IndicatorPicker } from "@/components/indicator-picker";
 import { BarrioDrilldownHeader } from "@/components/barrio-drilldown-header";
 import { SiteHeader } from "@/components/site-header";
+import { MuniSearch } from "@/components/muni-search";
 import { SiteFooter } from "@/components/site-footer";
 import { TerritoryContextPanel } from "@/components/territory-context-panel";
 import { DesignationStatCard } from "@/components/designation-stat-card";
@@ -72,7 +73,7 @@ export default function HomePage() {
         <div className="grid gap-12 md:grid-cols-[1.1fr_1fr] md:items-end">
           <div>
             <p className="mb-5 font-mono text-xs uppercase tracking-[0.3em] text-[var(--color-teal-soft)] rise rise-1">
-              Panel público · v0.1
+              Panel público · v0.2
             </p>
             <h1 className="font-display text-5xl leading-[1.02] tracking-tight text-[var(--color-text)] md:text-7xl rise rise-2">
               Los datos de salud
@@ -100,7 +101,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-6 py-8">
         <DesignationStatCard />
 
-        <div className="mb-4 flex items-end justify-between rise rise-4">
+        <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between rise rise-4">
           <div>
             <h2 className="font-display text-3xl tracking-tight md:text-4xl">
               El mapa
@@ -109,9 +110,7 @@ export default function HomePage() {
               Fuente: US Census ACS / PR Community Survey
             </p>
           </div>
-          <p className="hidden text-xs text-[var(--color-text-muted)] md:block">
-            Haz clic en un municipio para ver detalles
-          </p>
+          <MuniSearch />
         </div>
 
         <div className="space-y-0 rise rise-5">

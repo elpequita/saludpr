@@ -27,7 +27,7 @@
 
   --color-text: #e9e3d6;
   --color-text-muted: #8ca0a8;
-  --color-text-subtle: #4d6670;
+  --color-text-subtle: #73919c; /* 5.5:1 on ink — 10px mono kickers need AA */
   --color-border: #1e3640;
 
   /* --- Typography --- */

@@ -134,15 +134,19 @@ export const INDICATORS: Record<string, IndicatorMeta> = {
 
 /**
  * Color ramps (low → high), 5 stops each.
- * High-is-bad uses amber/rose; high-is-good uses teal; neutral uses stone.
+ * Single-hue, lightness-monotone ramps: every step keeps ≥2:1 contrast against
+ * the map background (#0e1d24) so the low end never reads as "no data", and
+ * the brand amber stays out of the data layer (it marks UI, not magnitude).
+ * High-is-bad uses rose (the token reserved for critical data); high-is-good
+ * uses teal; neutral uses cool gray.
  */
 export const COLOR_RAMPS: Record<IndicatorDirection, string[]> = {
-  high_is_bad: ["#1e3640", "#3d4d3c", "#78653e", "#c2882c", "#f59e0b"],
-  high_is_good: ["#1e3640", "#155e60", "#0d8579", "#2fb4a0", "#5eead4"],
-  // For low_is_bad: low values amber-red (bad), high values teal (good).
-  // Reverse of high_is_bad palette.
-  low_is_bad: ["#f59e0b", "#c2882c", "#78653e", "#3d4d3c", "#1e3640"],
-  neutral: ["#1a2a32", "#2e4047", "#4a5d64", "#728589", "#a8b8bc"],
+  high_is_bad: ["#7d3c4d", "#9e4f60", "#c06371", "#e17b85", "#ff9d9f"],
+  high_is_good: ["#1a5f5e", "#12796e", "#149282", "#3bbca6", "#72f0da"],
+  // For low_is_bad: low values rose (bad), high values recede. Reverse of
+  // high_is_bad so "worse" is always the brighter end of the same hue.
+  low_is_bad: ["#ff9d9f", "#e17b85", "#c06371", "#9e4f60", "#7d3c4d"],
+  neutral: ["#41565e", "#5a6f77", "#748a91", "#90a6ac", "#b6c7cb"],
 };
 
 export function formatValue(value: number | null, unit: IndicatorMeta["unit"], locale = "es"): string {

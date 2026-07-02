@@ -48,7 +48,7 @@ export default function RootLayout({
       {/* Umami Analytics — self-hosted, privacy-first, cookieless */}
       <Script
         defer
-        src="http://20.114.253.76:8081/script.js"
+        src="/stats/script.js"
         data-website-id="c2e5c0fe-98c3-409b-b4eb-a206955d2fe7"
         strategy="afterInteractive"
       />
